@@ -10,6 +10,7 @@ const PhotoGallery = () => {
 
     useEffect(() => {
         fetchPhotos();
+        // eslint-disable-next-line
     }, [storage]);
 
     const fetchPhotos = async () => {
