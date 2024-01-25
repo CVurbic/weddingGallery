@@ -4,7 +4,7 @@ import { useFirebase } from './firebase';
 import { ref, uploadBytes } from 'firebase/storage';
 import { LuImagePlus } from "react-icons/lu";
 
-const PhotoUploader = () => {
+const PhotoUploader = ({ onUpload }) => {
   const { storage } = useFirebase();
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
@@ -24,6 +24,8 @@ const PhotoUploader = () => {
         await Promise.all(uploadPromises);
         setSelectedFiles([]);
         setUploading(false);
+        // Notify the parent component that an upload has occurred
+        onUpload();
       } else {
         alert('Please select files first.');
       }
@@ -37,7 +39,6 @@ const PhotoUploader = () => {
   return (
     <div className="upload-container">
       <div className="upload-box">
-        {/* Render the label dynamically based on the number of selected files */}
         <label htmlFor="file-upload" className="custom-file-upload">
           <h2>{selectedFiles.length > 0 ? `${selectedFiles.length} photos selected` : 'Upload New Images'}</h2>
         </label>
