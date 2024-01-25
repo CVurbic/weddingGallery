@@ -2,22 +2,21 @@ import "./style.css";
 import React, { useState } from 'react';
 import { useFirebase } from './firebase';
 import { ref, uploadBytes } from 'firebase/storage';
-import { LuImagePlus } from "react-icons/lu";
+import { RiLoader4Line } from 'react-icons/ri'; // Import the loader icon
 
 const PhotoUploader = ({ onUpload }) => {
   const { storage } = useFirebase();
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
 
-  const handleFileChange = (e) => {
-    setSelectedFiles(e.target.files);
-  };
+  const handleFileChange = async (e) => {
+    const files = e.target.files;
+    setSelectedFiles(files);
 
-  const handleUpload = async () => {
     try {
-      if (selectedFiles.length > 0) {
+      if (files.length > 0) {
         setUploading(true);
-        const uploadPromises = Array.from(selectedFiles).map(async (file) => {
+        const uploadPromises = Array.from(files).map(async (file) => {
           const storageRef = ref(storage, file.name);
           await uploadBytes(storageRef, file);
         });
@@ -26,8 +25,6 @@ const PhotoUploader = ({ onUpload }) => {
         setUploading(false);
         // Notify the parent component that an upload has occurred
         onUpload();
-      } else {
-        alert('Please select files first.');
       }
     } catch (error) {
       console.error('Error uploading files:', error.message);
@@ -44,7 +41,11 @@ const PhotoUploader = ({ onUpload }) => {
         </label>
         <input id="file-upload" type="file" onChange={handleFileChange} multiple />
       </div>
-      <LuImagePlus onClick={handleUpload} disabled={uploading} className="uploadImgBtn" />
+      {uploading && (
+        <div className="uploading-icon">
+          <RiLoader4Line className="loader-icon" />
+        </div>
+      )}
     </div>
   );
 };
