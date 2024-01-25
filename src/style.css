@@ -1,0 +1,59 @@
+/* styles.css */
+.photo-uploader-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.upload-box {
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.upload-box input[type="file"] {
+    margin-bottom: 10px;
+}
+
+.photo-gallery-container {
+    margin-top: 20px;
+}
+
+
+
+
+/* Add this to your CSS file */
+.photo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+
+    align-items: center;
+    justify-items: center;
+}
+
+.photo-grid img {
+
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+    max-width: 95%;
+    cursor: pointer;
+
+    &:hover {
+        scale: 1.1;
+    }
+}
+
+/* Style for enlarging the image */
+.photo-grid img.enlarged {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: contain;
+    z-index: 9999;
+    cursor: pointer;
+}
