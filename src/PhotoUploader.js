@@ -40,15 +40,15 @@ const PhotoUploader = () => {
   };
 
   return (
-    <div className="">
+    <div className="upload-container">
       <div className="upload-box">
-        <h2>Upload New Images</h2>
 
+        <label htmlFor="file-upload" className="custom-file-upload"><h2>Upload New Images</h2></label>
         <input id="file-upload" type="file" onChange={handleFileChange} multiple />
 
-        <LuImagePlus onClick={handleUpload} disabled={uploading} width={50} />
 
       </div>
+      <LuImagePlus onClick={handleUpload} disabled={uploading} className="uploadImgBtn" />
     </div>
   );
 };

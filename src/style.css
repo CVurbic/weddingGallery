@@ -39,6 +39,26 @@ body {
     transform: scale(1.2);
 }
 
+.custom-file-upload {
+    cursor: pointer;
+}
+
+.uploadImgBtn {
+    width: 50px;
+    height: 50px;
+    margin: 0 auto;
+    cursor: pointer;
+
+}
+
+.upload-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
 .upload-box {
     border: 2px dashed #ccc;
     padding: 20px;
