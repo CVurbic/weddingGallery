@@ -22,6 +22,7 @@
 }
 
 .fullscreen-photo {
+    border-radius: 10px;
     max-width: 90%;
     max-height: 90%;
 }
