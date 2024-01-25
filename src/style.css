@@ -128,10 +128,11 @@ header p {
     .photo-grid {
         grid-template-columns: repeat(4, minmax(22%, 1fr));
 
-        img {
-            height: 150px;
-        }
-
         /* Adjust columns for smaller screens */
+    }
+
+    .photo-grid img {
+        height: 150px;
+
     }
 }

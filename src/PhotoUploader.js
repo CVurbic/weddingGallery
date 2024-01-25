@@ -1,4 +1,3 @@
-// src/PhotoUploader.jsx
 import "./style.css";
 import React, { useState } from 'react';
 import { useFirebase } from './firebase';
@@ -9,9 +8,6 @@ const PhotoUploader = () => {
   const { storage } = useFirebase();
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
-
-
-
 
   const handleFileChange = (e) => {
     setSelectedFiles(e.target.files);
@@ -26,7 +22,6 @@ const PhotoUploader = () => {
           await uploadBytes(storageRef, file);
         });
         await Promise.all(uploadPromises);
-        alert('Files uploaded successfully!');
         setSelectedFiles([]);
         setUploading(false);
       } else {
@@ -42,11 +37,11 @@ const PhotoUploader = () => {
   return (
     <div className="upload-container">
       <div className="upload-box">
-
-        <label htmlFor="file-upload" className="custom-file-upload"><h2>Upload New Images</h2></label>
+        {/* Render the label dynamically based on the number of selected files */}
+        <label htmlFor="file-upload" className="custom-file-upload">
+          <h2>{selectedFiles.length > 0 ? `${selectedFiles.length} photos selected` : 'Upload New Images'}</h2>
+        </label>
         <input id="file-upload" type="file" onChange={handleFileChange} multiple />
-
-
       </div>
       <LuImagePlus onClick={handleUpload} disabled={uploading} className="uploadImgBtn" />
     </div>

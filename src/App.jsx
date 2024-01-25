@@ -12,7 +12,6 @@ function App() {
             <header>
                 <h1>Ulla & Christian</h1>
                 <p>27. Siječanj 2024 </p>
-                <p>Dobrodošli na stranicu našeg vjenčanja! Pogledajte naše predivne fotografije i podijelite s nama uzbudljive trenutke.</p>
                 {/* You can add more text or information here */}
             </header>
 
