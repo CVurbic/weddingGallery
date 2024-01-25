@@ -37,7 +37,7 @@ const PhotoUploader = ({ onUpload }) => {
     <div className="upload-container">
       <div className="upload-box">
         <label htmlFor="file-upload" className="custom-file-upload">
-          <h2>{selectedFiles.length > 0 ? `${selectedFiles.length} photos selected` : 'Upload New Images'}</h2>
+          <h2>{selectedFiles.length > 0 ? `${selectedFiles.length} photos selected` : `Upload New Images `}</h2>
         </label>
         <input id="file-upload" type="file" onChange={handleFileChange} multiple />
       </div>
