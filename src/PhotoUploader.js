@@ -1,6 +1,6 @@
 // src/PhotoUploader.jsx
 import "./style.css";
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useFirebase } from './firebase';
 import { ref, uploadBytes } from 'firebase/storage';
 import { AiOutlinePlus } from "react-icons/ai";
