@@ -3,7 +3,7 @@ import "./style.css";
 import React, { useState } from 'react';
 import { useFirebase } from './firebase';
 import { ref, uploadBytes } from 'firebase/storage';
-import { AiOutlinePlus } from "react-icons/ai";
+import { LuImagePlus } from "react-icons/lu";
 
 const PhotoUploader = () => {
   const { storage } = useFirebase();
@@ -43,13 +43,11 @@ const PhotoUploader = () => {
     <div className="">
       <div className="upload-box">
         <h2>Upload New Images</h2>
-        <label htmlFor="file-upload" className="custom-file-upload">
-          <AiOutlinePlus /> Choose Files
-        </label>
+
         <input id="file-upload" type="file" onChange={handleFileChange} multiple />
-        <button onClick={handleUpload} disabled={uploading}>
-          {uploading ? 'Uploading...' : 'Upload'}
-        </button>
+
+        <LuImagePlus onClick={handleUpload} disabled={uploading} width={50} />
+
       </div>
     </div>
   );

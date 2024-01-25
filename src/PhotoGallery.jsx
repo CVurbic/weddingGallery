@@ -3,10 +3,12 @@
 import React, { useState, useEffect } from 'react';
 import { useFirebase, getAllPhotos } from './firebase';
 import { getDownloadURL, ref } from 'firebase/storage';
+import './PhotoGallery.css'; // Import your CSS file for PhotoGallery
 
 const PhotoGallery = () => {
     const { storage } = useFirebase();
     const [photos, setPhotos] = useState([]);
+    const [fullscreenPhoto, setFullscreenPhoto] = useState(null);
 
     useEffect(() => {
         fetchPhotos();
@@ -26,10 +28,12 @@ const PhotoGallery = () => {
         }
     };
 
-    const enlargeImage = (index) => {
-        // Set a CSS class to enlarge the clicked image
-        const image = document.getElementById(`image-${index}`);
-        image.classList.toggle('enlarged');
+    const handlePhotoClick = (index) => {
+        setFullscreenPhoto(photos[index]);
+    };
+
+    const handleCloseFullscreen = () => {
+        setFullscreenPhoto(null);
     };
 
     return (
@@ -39,14 +43,18 @@ const PhotoGallery = () => {
                 {photos.map((photo, index) => (
                     <img
                         key={index}
-                        id={`image-${index}`}
                         src={photo.url}
                         alt={`${index}`}
-                        onClick={() => enlargeImage(index)}
-                        loading="lazy" // Lazy loading attribute
+                        className="gallery-photo"
+                        onClick={() => handlePhotoClick(index)}
                     />
                 ))}
             </div>
+            {fullscreenPhoto && (
+                <div className="fullscreen-overlay" onClick={handleCloseFullscreen}>
+                    <img src={fullscreenPhoto.url} alt="Fullscreen" className="fullscreen-photo" />
+                </div>
+            )}
         </div>
     );
 };
