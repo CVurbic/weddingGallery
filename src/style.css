@@ -2,7 +2,7 @@
 
 body {
     padding: 10rem 2rem 2rem 2rem;
-    color: #777777;
+    color: #a5a5a5;
     /* Paragraph color */
     font-family: 'Lato', sans-serif;
     /* Paragraph font */
@@ -86,7 +86,7 @@ header {
 header h1 {
     font-size: 32px;
     margin-bottom: 10px;
-    color: #333;
+    color: #69645b;
     /* Header color */
     font-family: 'Playfair Display', serif;
     /* Header font */
