@@ -22,14 +22,24 @@ body {
     /* Adjust margin for smaller screens */
 }
 
+.photo-gallery-container h1 {
+    margin-top: 2rem;
+    text-align: center;
+}
+
 .photo-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     /* Adjust grid columns */
     gap: 10px;
+    margin: 0 auto;
     border-radius: 1rem;
-    border: 2px dotted white;
+    border: 2px dotted rgb(168, 168, 168);
     padding: 0.5rem;
+    max-width: 1000px;
+    background-color: rgba(97, 97, 97, 0.6);
+
+
 
 }
 
@@ -63,6 +73,7 @@ body {
     flex-wrap: wrap;
     gap: 2rem;
 }
+
 
 .upload-box {
     border: 2px dashed #ccc;
@@ -122,6 +133,7 @@ header p {
     z-index: -1;
 }
 
+
 @keyframes spin {
     0% {
         transform: rotate(0deg);
@@ -153,7 +165,7 @@ header p {
     }
 
     .photo-grid {
-        grid-template-columns: repeat(4, minmax(22%, 1fr));
+        grid-template-columns: repeat(3, minmax(22%, 1fr));
         max-height: 300px;
         overflow-y: scroll;
         /* Adjust columns for smaller screens */

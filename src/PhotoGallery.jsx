@@ -66,35 +66,33 @@ const PhotoGallery = ({ uploadTrigger }) => {
         setFullscreenPhoto(photos[previousIndex]);
     };
 
-
     return (
         <div className="photo-gallery-container">
-            <h2>Photo Gallery</h2>
+            <h1>Photo Gallery</h1>
             <div className="photo-grid">
                 {photos.map((photo, index) => (
                     <LazyLoadImage
-
                         key={index}
                         src={photo.url}
                         alt={`${index}`}
                         className="gallery-photo"
-                        onClick={() => handlePhotoClick(index)} />
-
+                        onClick={() => handlePhotoClick(index)}
+                    />
                 ))}
             </div>
             {fullscreenPhoto && (
-                <div
-                    className="fullscreen-overlay"
-                    onClick={handleCloseFullscreen}
-                >
-                    <div className="fullscreen-image-container">
-                        <IoIosArrowBack className="arrow-icon left-arrow" onClick={handlePreviousPhoto} />
-                        <img src={fullscreenPhoto.url} alt="Fullscreen" className="fullscreen-photo" />
-                        <IoIosArrowForward className="arrow-icon right-arrow" onClick={handleNextPhoto} />
-                    </div>
-                </div>
-            )}
+                <div>
+                    <div className="fullscreen-overlay" onClick={handleCloseFullscreen}></div>
 
+                    <div className="fullscreen-image-container">
+                        <img src={fullscreenPhoto.url} alt="Fullscreen" className="fullscreen-photo" />
+                    </div>
+                    <IoIosArrowBack className="arrow-icon left-arrow" onClick={handlePreviousPhoto} />
+                    <IoIosArrowForward className="arrow-icon right-arrow" onClick={handleNextPhoto} />
+
+                </div>
+
+            )}
         </div>
     );
 };
