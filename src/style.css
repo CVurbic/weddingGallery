@@ -1,7 +1,9 @@
 /* style.css */
 
 body {
-    padding: 10rem 2rem 2rem 2rem;
+    box-sizing: border-box;
+    height: 100vh;
+    padding: 6rem 2rem 2rem 2rem;
     color: #a5a5a5;
     /* Paragraph color */
     font-family: 'Lato', sans-serif;
@@ -25,6 +27,10 @@ body {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     /* Adjust grid columns */
     gap: 10px;
+    border-radius: 1rem;
+    border: 2px dotted white;
+    padding: 0.5rem;
+
 }
 
 .photo-grid img {
@@ -148,7 +154,8 @@ header p {
 
     .photo-grid {
         grid-template-columns: repeat(4, minmax(22%, 1fr));
-
+        max-height: 300px;
+        overflow-y: scroll;
         /* Adjust columns for smaller screens */
     }
 

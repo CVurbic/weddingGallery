@@ -66,32 +66,6 @@ const PhotoGallery = ({ uploadTrigger }) => {
     };
 
 
-    let touchStartX = 0;
-    let touchEndX = 0;
-
-    const handleTouchStart = (e) => {
-        touchStartX = e.touches[0].clientX;
-    };
-
-    const handleTouchEnd = (e) => {
-        touchEndX = e.changedTouches[0].clientX;
-        handleSwipe();
-    };
-
-    const handleSwipe = () => {
-        const deltaX = touchEndX - touchStartX;
-        const threshold = 50; // Minimum swipe distance required
-
-        if (Math.abs(deltaX) > threshold) {
-            if (deltaX > 0) {
-                // Swiped right, move to previous photo
-                handlePreviousPhoto();
-            } else {
-                // Swiped left, move to next photo
-                handleNextPhoto();
-            }
-        }
-    };
     return (
         <div className="photo-gallery-container">
             <h2>Photo Gallery</h2>
@@ -110,8 +84,6 @@ const PhotoGallery = ({ uploadTrigger }) => {
                 <div
                     className="fullscreen-overlay"
                     onClick={handleCloseFullscreen}
-                    onTouchStart={handleTouchStart}
-                    onTouchEnd={handleTouchEnd}
                 >
                     <div className="fullscreen-image-container">
                         <IoIosArrowBack className="arrow-icon left-arrow" onClick={handlePreviousPhoto} />
