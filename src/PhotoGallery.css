@@ -48,8 +48,6 @@
     object-fit: contain;
 }
 
-.gallery-photo {}
-
 .arrow-container {
     position: fixed;
     top: 50%;
@@ -105,7 +103,7 @@
     margin-right: 5px;
 }
 
-.password-submit-btn {
+.password-btn {
     padding: 8px 16px;
     background-color: #616161;
     color: white;
@@ -115,8 +113,8 @@
     font-size: 16px;
 }
 
-.password-submit-btn:hover {
-    background-color: #0056b3;
+.password-btn:hover {
+    background-color: #363636;
 }
 
 @media screen and (max-width: 650px) {

@@ -127,11 +127,13 @@ const PhotoGallery = ({ uploadTrigger }) => {
                 </div>
             )}
             {showDownloadButton ? (
-                <button onClick={handleDownloadAllPhotos}>Download All Photos</button>
+                <div className="password-input-container">
+                    <button onClick={handleDownloadAllPhotos} className='password-btn'>Download All Photos</button>
+                </div>
             ) : (
                 <div className="password-input-container">
                     {password === '' ? (
-                        <IoMdLock className="padlock-icon" onClick={() => setPassword(' ')} />
+                        <IoMdLock className="padlock-icon" onClick={() => setPassword('2')} />
                     ) : (
                         <>
                             <input
@@ -140,7 +142,7 @@ const PhotoGallery = ({ uploadTrigger }) => {
                                 onChange={handlePasswordChange}
                                 className="password-input"
                             />
-                            <button onClick={handlePasswordSubmit} className="password-submit-btn">
+                            <button onClick={handlePasswordSubmit} className="password-btn">
                                 Submit
                             </button>
                         </>
