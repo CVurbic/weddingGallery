@@ -5,36 +5,20 @@ import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import './PhotoGallery.css'; // Import your CSS file for PhotoGallery
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import JSZip from 'jszip';
+import { IoMdLock } from 'react-icons/io';
 
 const PhotoGallery = ({ uploadTrigger }) => {
     const { storage } = useFirebase();
     const [photos, setPhotos] = useState([]);
     const [fullscreenPhoto, setFullscreenPhoto] = useState(null);
     const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
+    const [password, setPassword] = useState('');
+    const [showDownloadButton, setShowDownloadButton] = useState(false);
 
     useEffect(() => {
         fetchPhotos();
         // eslint-disable-next-line
-    }, [storage, uploadTrigger]); // Fetch photos whenever storage or uploadTrigger changes
-
-    useEffect(() => {
-        const handleKeyPress = (event) => {
-            if (event.keyCode === 37) {
-                // Left arrow key
-                handlePreviousPhoto();
-            } else if (event.keyCode === 39) {
-                // Right arrow key
-                handleNextPhoto();
-            }
-        };
-
-        window.addEventListener('keydown', handleKeyPress);
-
-        return () => {
-            window.removeEventListener('keydown', handleKeyPress);
-        };
-        // eslint-disable-next-line
-    }, [fullscreenPhoto]); // Listen for key events when fullscreenPhoto changes
+    }, [storage, uploadTrigger]);
 
     const fetchPhotos = async () => {
         try {
@@ -43,16 +27,13 @@ const PhotoGallery = ({ uploadTrigger }) => {
                 const fileRef = ref(storage, path);
                 const url = await getDownloadURL(fileRef);
 
-                // Retrieve metadata for the file
                 const metadataSnapshot = await getMetadata(fileRef);
-                const creationTime = new Date(metadataSnapshot.timeCreated); // Convert to Date object
+                const creationTime = new Date(metadataSnapshot.timeCreated);
 
                 return { url, path, creationTime };
             }));
 
-            // Sort the photos by creation time in descending order
-            photoURLs.sort((a, b) => b.creationTime - a.creationTime); // Compare Date objects
-
+            photoURLs.sort((a, b) => b.creationTime - a.creationTime);
             setPhotos(photoURLs);
         } catch (error) {
             console.error('Error fetching photos:', error.message);
@@ -82,56 +63,42 @@ const PhotoGallery = ({ uploadTrigger }) => {
 
     const handleDownloadAllPhotos = async () => {
         try {
-            // Initialize an array to store image blob promises
-            const blobPromises = [];
-
-            // Iterate through each photo URL
-            photos.forEach((photo, index) => {
-                const fileRef = ref(storage, photo.path); // Assuming each photo object contains its path in Firebase Storage
-
-                // Fetch the download URL for the photo
-                const downloadUrlPromise = getDownloadURL(fileRef)
-                    .then(url => {
-                        // Fetch the image as a blob
-                        return fetch(url)
-                            .then(response => response.blob())
-                            .then(blob => {
-                                // Return the blob with the associated filename
-                                return { blob, filename: `photo_${index}.jpg` };
-                            });
-                    });
-
-                // Add the promise to the array
-                blobPromises.push(downloadUrlPromise);
-            });
-
-            // Resolve all blob promises
-            const blobs = await Promise.all(blobPromises);
-
-            // Create a zip file using the resolved blobs
             const zip = new JSZip();
-            blobs.forEach(({ blob, filename }) => {
-                zip.file(filename, blob);
-            });
 
-            // Generate the zip file asynchronously
+            await Promise.all(photos.map(async (photo, index) => {
+                const fileRef = ref(storage, photo.path);
+                const url = await getDownloadURL(fileRef);
+                const response = await fetch(url);
+                const blob = await response.blob();
+                zip.file(`photo_${index}.jpg`, blob);
+            }));
+
             const zipBlob = await zip.generateAsync({ type: 'blob' });
-
-            // Create a URL for the zip file blob
             const zipUrl = URL.createObjectURL(zipBlob);
 
-            // Trigger the download of the zip file
             const link = document.createElement('a');
             link.href = zipUrl;
-            link.download = 'photos.zip'; // Set the default download filename
+            link.download = 'photos.zip';
             document.body.appendChild(link);
             link.click();
 
-            // Clean up
             URL.revokeObjectURL(zipUrl);
             document.body.removeChild(link);
         } catch (error) {
             console.error('Error downloading photos:', error);
+        }
+    };
+
+    const handlePasswordChange = (event) => {
+        setPassword(event.target.value);
+    };
+
+    const handlePasswordSubmit = () => {
+        // Check if the password is correct
+        if (password === '27.01.2024') {
+            setShowDownloadButton(true);
+        } else {
+            alert('Incorrect password. Please try again.');
         }
     };
 
@@ -152,17 +119,35 @@ const PhotoGallery = ({ uploadTrigger }) => {
             {fullscreenPhoto && (
                 <div>
                     <div className="fullscreen-overlay" onClick={handleCloseFullscreen}></div>
-
                     <div className="fullscreen-image-container">
                         <img src={fullscreenPhoto.url} alt="Fullscreen" className="fullscreen-photo" />
                     </div>
                     <IoIosArrowBack className="arrow-icon left-arrow" onClick={handlePreviousPhoto} />
                     <IoIosArrowForward className="arrow-icon right-arrow" onClick={handleNextPhoto} />
-
                 </div>
-
             )}
-            <button onClick={handleDownloadAllPhotos}>Download All Photos</button>
+            {showDownloadButton ? (
+                <button onClick={handleDownloadAllPhotos}>Download All Photos</button>
+            ) : (
+                <div className="password-input-container">
+                    {password === '' ? (
+                        <IoMdLock className="padlock-icon" onClick={() => setPassword(' ')} />
+                    ) : (
+                        <>
+                            <input
+                                type="password"
+                                value={password}
+                                onChange={handlePasswordChange}
+                                className="password-input"
+                            />
+                            <button onClick={handlePasswordSubmit} className="password-submit-btn">
+                                Submit
+                            </button>
+                        </>
+                    )}
+                </div>
+            )}
+
         </div>
     );
 };

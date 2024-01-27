@@ -87,6 +87,38 @@
     background-color: rgba(252, 252, 252, 0.5);
 }
 
+
+/* Style for the password input and download button */
+.password-input-container {
+    display: flex;
+    justify-content: center;
+    margin: 10px auto;
+}
+
+.password-input {
+    width: 50%;
+    max-width: 150px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    margin-right: 5px;
+}
+
+.password-submit-btn {
+    padding: 8px 16px;
+    background-color: #616161;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.password-submit-btn:hover {
+    background-color: #0056b3;
+}
+
 @media screen and (max-width: 650px) {
     .fullscreen-image-container {
         height: max-content;
