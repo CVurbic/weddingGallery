@@ -2,6 +2,15 @@
 
 .photo-gallery-container {
     position: relative;
+
+    user-select: none;
+    /* Disable text selection */
+    -webkit-user-select: none;
+    /* For Safari */
+    -moz-user-select: none;
+    /* For Firefox */
+    -ms-user-select: none;
+    /* For Internet Explorer/Edge */
     /* Ensure proper stacking context */
 }
 
@@ -39,6 +48,8 @@
     object-fit: contain;
 }
 
+.gallery-photo {}
+
 .arrow-container {
     position: fixed;
     top: 50%;
@@ -62,6 +73,8 @@
     transform: translateY(-50%);
     left: 0px;
     z-index: 203;
+    border-radius: 50%;
+    background-color: rgba(252, 252, 252, 0.5);
 }
 
 .right-arrow {
@@ -70,6 +83,8 @@
     transform: translateY(-50%);
     z-index: 203;
     right: 0px;
+    border-radius: 50%;
+    background-color: rgba(252, 252, 252, 0.5);
 }
 
 @media screen and (max-width: 650px) {
