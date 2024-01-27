@@ -11,8 +11,6 @@ const PhotoGallery = ({ uploadTrigger }) => {
     const [photos, setPhotos] = useState([]);
     const [fullscreenPhoto, setFullscreenPhoto] = useState(null);
     const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
-    const [password, setPassword] = useState('');
-    const [isUnlocked, setIsUnlocked] = useState(false);
 
     useEffect(() => {
         fetchPhotos();
@@ -21,7 +19,6 @@ const PhotoGallery = ({ uploadTrigger }) => {
 
     useEffect(() => {
         const handleKeyPress = (event) => {
-            if (!isUnlocked) return; // Don't handle keypress if the download button is locked
             if (event.keyCode === 37) {
                 // Left arrow key
                 handlePreviousPhoto();
@@ -37,7 +34,7 @@ const PhotoGallery = ({ uploadTrigger }) => {
             window.removeEventListener('keydown', handleKeyPress);
         };
         // eslint-disable-next-line
-    }, [fullscreenPhoto, isUnlocked]); // Listen for key events when fullscreenPhoto changes
+    }, [fullscreenPhoto]); // Listen for key events when fullscreenPhoto changes
 
     const fetchPhotos = async () => {
         try {
@@ -83,38 +80,38 @@ const PhotoGallery = ({ uploadTrigger }) => {
         setFullscreenPhoto(photos[previousIndex]);
     };
 
-    const handlePasswordChange = (event) => {
-        setPassword(event.target.value);
-    };
-
-    const handleUnlockDownload = () => {
-        // Implement your password validation logic here
-        // For demonstration purposes, let's assume the correct password is "password123"
-        const correctPassword = "password123";
-        if (password === correctPassword) {
-            setIsUnlocked(true);
-        } else {
-            alert("Incorrect password. Please try again.");
-        }
-    };
-
-    const handleDownloadPhotos = async () => {
+    const handleDownloadAllPhotos = async () => {
         try {
-            const zip = new JSZip();
+            // Initialize an array to store image blob promises
+            const blobPromises = [];
 
-            // Add each photo to the zip file
+            // Iterate through each photo URL
             photos.forEach((photo, index) => {
-                const filename = `photo_${index}.jpg`; // Adjust filename format as needed
-                // Fetch the photo as a blob
-                fetch(photo.url)
-                    .then(response => response.blob())
-                    .then(blob => {
-                        // Add the blob to the zip file with the filename
-                        zip.file(filename, blob, { binary: true });
-                    })
-                    .catch(error => {
-                        console.error('Error fetching photo:', error);
+                const fileRef = ref(storage, photo.path); // Assuming each photo object contains its path in Firebase Storage
+
+                // Fetch the download URL for the photo
+                const downloadUrlPromise = getDownloadURL(fileRef)
+                    .then(url => {
+                        // Fetch the image as a blob
+                        return fetch(url)
+                            .then(response => response.blob())
+                            .then(blob => {
+                                // Return the blob with the associated filename
+                                return { blob, filename: `photo_${index}.jpg` };
+                            });
                     });
+
+                // Add the promise to the array
+                blobPromises.push(downloadUrlPromise);
+            });
+
+            // Resolve all blob promises
+            const blobs = await Promise.all(blobPromises);
+
+            // Create a zip file using the resolved blobs
+            const zip = new JSZip();
+            blobs.forEach(({ blob, filename }) => {
+                zip.file(filename, blob);
             });
 
             // Generate the zip file asynchronously
@@ -134,10 +131,9 @@ const PhotoGallery = ({ uploadTrigger }) => {
             URL.revokeObjectURL(zipUrl);
             document.body.removeChild(link);
         } catch (error) {
-            console.error('Error creating zip file:', error);
+            console.error('Error downloading photos:', error);
         }
     };
-
 
     return (
         <div className="photo-gallery-container">
@@ -162,24 +158,11 @@ const PhotoGallery = ({ uploadTrigger }) => {
                     </div>
                     <IoIosArrowBack className="arrow-icon left-arrow" onClick={handlePreviousPhoto} />
                     <IoIosArrowForward className="arrow-icon right-arrow" onClick={handleNextPhoto} />
-                </div>
-            )}
 
-            <div className="download-container">
-                {!isUnlocked ? (
-                    <div>
-                        <input
-                            type="password"
-                            value={password}
-                            onChange={handlePasswordChange}
-                            placeholder="Enter password"
-                        />
-                        <button onClick={handleUnlockDownload}>Unlock Download</button>
-                    </div>
-                ) : (
-                    <button onClick={handleDownloadPhotos}>Download All Photos</button>
-                )}
-            </div>
+                </div>
+
+            )}
+            <button onClick={handleDownloadAllPhotos}>Download All Photos</button>
         </div>
     );
 };
