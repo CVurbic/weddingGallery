@@ -47,6 +47,7 @@ const PhotoGallery = ({ uploadTrigger }) => {
             // Sort images based on creation time
             filteredPhotos.sort((a, b) => b.creationTime - a.creationTime);
 
+            console.log(filteredPhotos)
             setPhotos(filteredPhotos);
         } catch (error) {
             console.error('Error fetching photos:', error.message);
