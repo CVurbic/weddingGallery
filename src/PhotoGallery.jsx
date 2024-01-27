@@ -3,7 +3,6 @@ import { useFirebase, getAllPhotos } from './firebase';
 import { getDownloadURL, ref, getMetadata } from 'firebase/storage';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import './PhotoGallery.css'; // Import your CSS file for PhotoGallery
-import { LazyLoadImage } from 'react-lazy-load-image-component';
 import JSZip from 'jszip';
 import { IoMdLock } from 'react-icons/io';
 
@@ -107,11 +106,12 @@ const PhotoGallery = ({ uploadTrigger }) => {
             <h1>Photo Gallery</h1>
             <div className="photo-grid">
                 {photos.map((photo, index) => (
-                    <LazyLoadImage
+                    <img
                         key={index}
                         src={photo.url}
                         alt={`${index}`}
                         className="gallery-photo"
+                        loading='lazy'
                         onClick={() => handlePhotoClick(index)}
                     />
                 ))}

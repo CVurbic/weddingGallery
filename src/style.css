@@ -37,6 +37,8 @@ body {
     border: 2px dotted rgb(168, 168, 168);
     padding: 0.5rem;
     max-width: 1000px;
+    max-height: 650px;
+    overflow-y: auto;
     background-color: rgba(97, 97, 97, 0.6);
 
 
