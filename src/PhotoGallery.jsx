@@ -3,7 +3,7 @@ import { useFirebase, getAllPhotos } from './firebase';
 import { getDownloadURL, ref, getMetadata } from 'firebase/storage';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import './PhotoGallery.css'; // Import your CSS file for PhotoGallery
-import JSZip, { filter } from 'jszip';
+import JSZip from 'jszip';
 import { IoMdLock } from 'react-icons/io';
 
 const PhotoGallery = ({ uploadTrigger }) => {
