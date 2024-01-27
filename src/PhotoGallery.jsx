@@ -3,7 +3,7 @@ import { useFirebase, getAllPhotos } from './firebase';
 import { getDownloadURL, ref, getMetadata } from 'firebase/storage';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import './PhotoGallery.css'; // Import your CSS file for PhotoGallery
-import JSZip from 'jszip';
+import JSZip, { filter } from 'jszip';
 import { IoMdLock } from 'react-icons/io';
 
 const PhotoGallery = ({ uploadTrigger }) => {
@@ -22,22 +22,39 @@ const PhotoGallery = ({ uploadTrigger }) => {
     const fetchPhotos = async () => {
         try {
             const photoList = await getAllPhotos();
-            const photoURLs = await Promise.all(photoList.map(async (path) => {
-                const fileRef = ref(storage, path);
-                const url = await getDownloadURL(fileRef);
+            const filteredPhotos = [];
 
-                const metadataSnapshot = await getMetadata(fileRef);
-                const creationTime = new Date(metadataSnapshot.timeCreated);
-
-                return { url, path, creationTime };
+            // Fetch metadata and filter images based on filename and extension
+            await Promise.all(photoList.map(async (path) => {
+                //console.log(path)
+                if (path.endsWith('200x200.webp')) {
+                    const fileRef = ref(storage, path);
+                    try {
+                        const metadataSnapshot = await getMetadata(fileRef);
+                        const creationTime = new Date(metadataSnapshot.timeCreated);
+                        const downloadUrl = await getDownloadURL(fileRef);
+                        let imageName = path.replace("_200x200.webp", "");
+                        let realImage = photoList.find(i => i.includes(imageName) && !i.includes("200x200"))
+                        let realImageRef = ref(storage, realImage);
+                        let realImageDownloadUrl = await getDownloadURL(realImageRef);
+                        filteredPhotos.push({ url: downloadUrl, path, creationTime, fullImageUrl: realImageDownloadUrl });
+                    } catch (error) {
+                        console.error('Error fetching metadata or download URL:', error.message);
+                    }
+                }
             }));
 
-            photoURLs.sort((a, b) => b.creationTime - a.creationTime);
-            setPhotos(photoURLs);
+            // Sort images based on creation time
+            filteredPhotos.sort((a, b) => b.creationTime - a.creationTime);
+
+            setPhotos(filteredPhotos);
         } catch (error) {
             console.error('Error fetching photos:', error.message);
         }
     };
+
+
+
 
     const handlePhotoClick = (index) => {
         setFullscreenPhoto(photos[index]);
@@ -120,7 +137,7 @@ const PhotoGallery = ({ uploadTrigger }) => {
                 <div>
                     <div className="fullscreen-overlay" onClick={handleCloseFullscreen}></div>
                     <div className="fullscreen-image-container">
-                        <img src={fullscreenPhoto.url} alt="Fullscreen" className="fullscreen-photo" />
+                        <img src={fullscreenPhoto.fullImageUrl} alt="Fullscreen" className="fullscreen-photo" />
                     </div>
                     <IoIosArrowBack className="arrow-icon left-arrow" onClick={handlePreviousPhoto} />
                     <IoIosArrowForward className="arrow-icon right-arrow" onClick={handleNextPhoto} />
