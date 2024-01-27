@@ -24,8 +24,8 @@ const PhotoGallery = ({ uploadTrigger }) => {
             const photoList = await getAllPhotos();
             const filteredPhotos = [];
 
-            console.log("photoList")
-            console.log(photoList)
+            /* console.log("photoList")
+            console.log(photoList) */
 
             // Fetch metadata and filter images based on filename and extension
             await Promise.all(photoList.map(async (path) => {
@@ -51,8 +51,8 @@ const PhotoGallery = ({ uploadTrigger }) => {
             // Sort images based on creation time
             filteredPhotos.sort((a, b) => b.creationTime - a.creationTime);
 
-            console.log("filteredPhotos")
-            console.log(filteredPhotos)
+            /* console.log("filteredPhotos")
+            console.log(filteredPhotos) */
             setPhotos(filteredPhotos);
         } catch (error) {
             console.error('Error fetching photos:', error.message);
