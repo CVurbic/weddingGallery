@@ -88,7 +88,8 @@ const PhotoGallery = ({ uploadTrigger }) => {
             const zip = new JSZip();
 
             await Promise.all(photos.map(async (photo, index) => {
-                const fileRef = ref(storage, photo.path);
+                console.log(photo)
+                const fileRef = ref(storage, photo.fullImageUrl);
                 const url = await getDownloadURL(fileRef);
                 const response = await fetch(url);
                 const blob = await response.blob();
@@ -117,7 +118,7 @@ const PhotoGallery = ({ uploadTrigger }) => {
 
     const handlePasswordSubmit = () => {
         // Check if the password is correct
-        if (password === '27.01.2024') {
+        if (password === '123456') {
             setShowDownloadButton(true);
         } else {
             alert('Incorrect password. Please try again.');
@@ -156,7 +157,7 @@ const PhotoGallery = ({ uploadTrigger }) => {
             ) : (
                 <div className="password-input-container">
                     {password === '' ? (
-                        <IoMdLock className="padlock-icon" onClick={() => setPassword('2')} />
+                        <IoMdLock className="padlock-icon" onClick={() => setPassword('1')} />
                     ) : (
                         <>
                             <input
