@@ -13,6 +13,7 @@ const PhotoGallery = ({ uploadTrigger }) => {
     const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
     const [password, setPassword] = useState('');
     const [showDownloadButton, setShowDownloadButton] = useState(false);
+    const [imageCache, setImageCache] = useState([]);
 
     useEffect(() => {
         fetchPhotos();
@@ -24,12 +25,7 @@ const PhotoGallery = ({ uploadTrigger }) => {
             const photoList = await getAllPhotos();
             const filteredPhotos = [];
 
-            /* console.log("photoList")
-            console.log(photoList) */
-
-            // Fetch metadata and filter images based on filename and extension
             await Promise.all(photoList.map(async (path) => {
-                //console.log(path)
                 if (path.endsWith('200x200.webp')) {
                     const fileRef = ref(storage, path);
                     try {
@@ -48,19 +44,33 @@ const PhotoGallery = ({ uploadTrigger }) => {
                 }
             }));
 
-            // Sort images based on creation time
             filteredPhotos.sort((a, b) => b.creationTime - a.creationTime);
 
-            /* console.log("filteredPhotos")
-            console.log(filteredPhotos) */
             setPhotos(filteredPhotos);
         } catch (error) {
             console.error('Error fetching photos:', error.message);
         }
     };
 
+    useEffect(() => {
+        // Preload images into cache
+        if (photos.length > 0) {
+            preloadImages();
+            console.log(imageCache)
+        }
 
+        // eslint-disable-next-line
+    }, [photos]);
 
+    const preloadImages = () => {
+        const cache = [];
+        photos.forEach((photo, index) => {
+            const img = new Image();
+            img.src = photo.fullImageUrl;
+            cache.push(img);
+        });
+        setImageCache(cache);
+    };
 
     const handlePhotoClick = (index) => {
         setFullscreenPhoto(photos[index]);
