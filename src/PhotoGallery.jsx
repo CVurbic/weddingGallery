@@ -13,7 +13,6 @@ const PhotoGallery = ({ uploadTrigger }) => {
     const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
     const [password, setPassword] = useState('');
     const [showDownloadButton, setShowDownloadButton] = useState(false);
-    const [imageCache, setImageCache] = useState([]);
 
     useEffect(() => {
         fetchPhotos();
@@ -52,25 +51,8 @@ const PhotoGallery = ({ uploadTrigger }) => {
         }
     };
 
-    useEffect(() => {
-        // Preload images into cache
-        if (photos.length > 0) {
-            preloadImages();
-            console.log(imageCache)
-        }
 
-        // eslint-disable-next-line
-    }, [photos]);
 
-    const preloadImages = () => {
-        const cache = [];
-        photos.forEach((photo, index) => {
-            const img = new Image();
-            img.src = photo.fullImageUrl;
-            cache.push(img);
-        });
-        setImageCache(cache);
-    };
 
     const handlePhotoClick = (index) => {
         setFullscreenPhoto(photos[index]);
@@ -146,6 +128,8 @@ const PhotoGallery = ({ uploadTrigger }) => {
                         alt={`${index}`}
                         className="gallery-photo"
                         loading='lazy'
+                        height="200"
+                        width="200"
                         onClick={() => handlePhotoClick(index)}
                     />
                 ))}
@@ -154,7 +138,12 @@ const PhotoGallery = ({ uploadTrigger }) => {
                 <div>
                     <div className="fullscreen-overlay" onClick={handleCloseFullscreen}></div>
                     <div className="fullscreen-image-container">
-                        <img src={fullscreenPhoto.fullImageUrl} alt="Fullscreen" className="fullscreen-photo" />
+                        <img
+                            src={fullscreenPhoto.fullImageUrl}
+                            alt="Fullscreen"
+                            className="fullscreen-photo"
+                            loading='lazy'
+                        />
                     </div>
                     <IoIosArrowBack className="arrow-icon left-arrow" onClick={handlePreviousPhoto} />
                     <IoIosArrowForward className="arrow-icon right-arrow" onClick={handleNextPhoto} />
