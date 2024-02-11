@@ -3,6 +3,7 @@ import { useFirebase, getAllPhotos } from './firebase';
 import { getDownloadURL, ref, getMetadata } from 'firebase/storage';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import './PhotoGallery.css'; // Import your CSS file for PhotoGallery
+import { ImSpinner2 } from "react-icons/im";
 import JSZip from 'jszip';
 import { IoMdLock } from 'react-icons/io';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
@@ -14,6 +15,7 @@ const PhotoGallery = ({ uploadTrigger }) => {
     const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
     const [password, setPassword] = useState('');
     const [showDownloadButton, setShowDownloadButton] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         fetchPhotos();
@@ -22,7 +24,6 @@ const PhotoGallery = ({ uploadTrigger }) => {
 
     const fetchPhotos = async () => {
         try {
-
             let photoList = await getAllPhotos();
             const filteredPhotos = [];
 
@@ -36,12 +37,9 @@ const PhotoGallery = ({ uploadTrigger }) => {
                     const creationTime = new Date(metadataSnapshot.timeCreated);
                     const downloadUrl = await getDownloadURL(fileRef);
 
-                    if (index === 1) console.log({ metadataSnapshot, downloadUrl })
-
                     let imageName = path.replace("_200x200.webp", "");
                     let realImage = photoListFull.find(i => i.includes(imageName))
                     let realImageRef = ref(storage, realImage);
-                    //let realImageDownloadUrl = await getDownloadURL(realImageRef);
                     filteredPhotos.push({ url: downloadUrl, path, creationTime, fullImageUrl: null, realImageRef: realImageRef });
                 } catch (error) {
                     console.error('Error fetching metadata or download URL:', error.message);
@@ -56,13 +54,9 @@ const PhotoGallery = ({ uploadTrigger }) => {
         }
     };
 
-
-
-
     const handlePhotoClick = async (index) => {
-        let fullImageUrl = await getDownloadURL(photos[index].realImageRef)
+        let fullImageUrl = await getDownloadURL(photos[index].realImageRef);
         setFullscreenPhoto({ ...photos[index], fullImageUrl: fullImageUrl });
-
         setCurrentPhotoIndex(index);
     };
 
@@ -71,17 +65,21 @@ const PhotoGallery = ({ uploadTrigger }) => {
     };
 
     const handleNextPhoto = async () => {
+        setIsLoading(true);
         const nextIndex = (currentPhotoIndex + 1) % photos.length;
         setCurrentPhotoIndex(nextIndex);
-        let fullImageUrl = await getDownloadURL(photos[nextIndex].realImageRef)
+        let fullImageUrl = await getDownloadURL(photos[nextIndex].realImageRef);
         setFullscreenPhoto({ ...photos[nextIndex], fullImageUrl: fullImageUrl });
+        setIsLoading(false);
     };
 
     const handlePreviousPhoto = async () => {
+        setIsLoading(true);
         const previousIndex = (currentPhotoIndex - 1 + photos.length) % photos.length;
         setCurrentPhotoIndex(previousIndex);
-        let fullImageUrl = await getDownloadURL(photos[previousIndex].realImageRef)
+        let fullImageUrl = await getDownloadURL(photos[previousIndex].realImageRef);
         setFullscreenPhoto({ ...photos[previousIndex], fullImageUrl: fullImageUrl });
+        setIsLoading(false);
     };
 
     const handleDownloadAllPhotos = async () => {
@@ -89,7 +87,7 @@ const PhotoGallery = ({ uploadTrigger }) => {
             const zip = new JSZip();
 
             await Promise.all(photos.map(async (photo, index) => {
-                console.log(photo)
+                console.log(photo);
                 const fileRef = ref(storage, photo.fullImageUrl);
                 const url = await getDownloadURL(fileRef);
                 const response = await fetch(url);
@@ -126,13 +124,11 @@ const PhotoGallery = ({ uploadTrigger }) => {
         }
     };
 
-
     return (
         <div className="photo-gallery-container">
             <h1>Photo Gallery</h1>
             <div className="photo-grid">
                 {photos.map((photo, index) => (
-
                     <LazyLoadImage
                         key={index}
                         src={photo.url}
@@ -149,11 +145,16 @@ const PhotoGallery = ({ uploadTrigger }) => {
                 <div>
                     <div className="fullscreen-overlay" onClick={handleCloseFullscreen}></div>
                     <div className="fullscreen-image-container">
-                        <LazyLoadImage
-                            src={fullscreenPhoto.fullImageUrl}
-                            alt="Fullscreen"
-                            className="fullscreen-photo"
-                        />
+                        {isLoading ? (
+                            <div className="loading-icon"><ImSpinner2 className="spinner" /></div> // Render the loading spinner icon
+                        ) : (
+                            <LazyLoadImage
+                                src={fullscreenPhoto.fullImageUrl}
+                                alt="Fullscreen"
+                                className="fullscreen-photo"
+                                onLoad={() => setIsLoading(false)}
+                            />
+                        )}
                     </div>
                     <IoIosArrowBack className="arrow-icon left-arrow" onClick={handlePreviousPhoto} />
                     <IoIosArrowForward className="arrow-icon right-arrow" onClick={handleNextPhoto} />
@@ -182,7 +183,6 @@ const PhotoGallery = ({ uploadTrigger }) => {
                     )}
                 </div>
             )}
-
         </div>
     );
 };
