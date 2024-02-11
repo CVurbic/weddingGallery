@@ -153,7 +153,6 @@ const PhotoGallery = ({ uploadTrigger }) => {
                             src={fullscreenPhoto.fullImageUrl}
                             alt="Fullscreen"
                             className="fullscreen-photo"
-                            loading='lazy'
                         />
                     </div>
                     <IoIosArrowBack className="arrow-icon left-arrow" onClick={handlePreviousPhoto} />
