@@ -194,6 +194,14 @@
         right: 10px;
         font-size: 1.5rem;
     }
+
+    .no-photos-message p {
+        font-size: 18px;
+    }
+
+    .upload-icon {
+        font-size: 60px;
+    }
 }
 
 @media screen and (max-width: 480px) {
@@ -214,4 +222,43 @@
     .close-icon {
         font-size: 1.2rem;
     }
+
+    .no-photos-message p {
+        font-size: 16px;
+    }
+
+    .upload-icon {
+        font-size: 50px;
+    }
+}
+
+.no-photos-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 20px;
+}
+
+.no-photos-message p {
+    font-size: 20px;
+    color: var(--text-color);
+    margin-bottom: 30px;
+}
+
+.upload-icon {
+    font-size: 80px;
+    color: var(--accent-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.upload-icon:hover {
+    transform: scale(1.1);
+    color: var(--secondary-color);
 }

@@ -4,9 +4,10 @@ import { GALLERY_TITLE } from '../constants';
 import { getDownloadURL } from 'firebase/storage';
 import { IoIosArrowBack, IoIosArrowForward, IoMdClose } from 'react-icons/io';
 import { ImSpinner2 } from "react-icons/im";
+import { FaCloudUploadAlt } from 'react-icons/fa';
 import '../styles/PhotoGallery.css';
 
-const PhotoGallery = ({ uploadTrigger }) => {
+const PhotoGallery = ({ uploadTrigger, onUploadClick }) => {
     const [photos, setPhotos] = useState([]);
     const [fullscreenPhoto, setFullscreenPhoto] = useState(null);
     const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
@@ -81,17 +82,24 @@ const PhotoGallery = ({ uploadTrigger }) => {
     return (
         <div className="photo-gallery-container">
             <h2 className="gallery-title">{GALLERY_TITLE}</h2>
-            <div className="photo-gallery">
-                {photos.map((photo, index) => (
-                    <div
-                        key={index}
-                        className={`photo-item ${getSpanClass(index)}`}
-                        onClick={() => handlePhotoClick(index)}
-                    >
-                        <img src={photo.url} alt={`${index + 1}`} loading="lazy" />
-                    </div>
-                ))}
-            </div>
+            {photos.length > 0 ? (
+                <div className="photo-gallery">
+                    {photos.map((photo, index) => (
+                        <div
+                            key={index}
+                            className={`photo-item ${getSpanClass(index)}`}
+                            onClick={() => handlePhotoClick(index)}
+                        >
+                            <img src={photo.url} alt={`${index + 1}`} loading="lazy" />
+                        </div>
+                    ))}
+                </div>
+            ) : (
+                <div className="no-photos-message">
+                    <p>There are no photos yet. Be the first to upload!</p>
+                    <FaCloudUploadAlt className="upload-icon" onClick={onUploadClick} />
+                </div>
+            )}
             {fullscreenPhoto && (
                 <div className="fullscreen-overlay" onClick={handleCloseFullscreen}>
                     <div className="fullscreen-image-container" onClick={(e) => e.stopPropagation()}>
