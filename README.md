@@ -13,7 +13,6 @@ This project is a wedding photo gallery that allows users to upload, view, and m
 - Fullscreen photo view with navigation
 - Responsive design for various screen sizes
 - Sorting photos by upload date
-- Support for multiple file types (images and videos)
 
 ## Technologies Used
 
