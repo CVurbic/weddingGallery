@@ -86,13 +86,7 @@ You can customize the application by modifying the following files:
 - `src/constants.js`: Update couple names, wedding date, and other app-wide settings
 - `src/styles`: Modify CSS files to change the look and feel of the application
 
-## Contributing
 
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
 
 ## Acknowledgments
 
