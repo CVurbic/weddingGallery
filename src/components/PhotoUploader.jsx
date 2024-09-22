@@ -4,6 +4,9 @@ import { UPLOAD_BUTTON_TEXT, MAX_UPLOAD_SIZE, ALLOWED_FILE_TYPES } from '../cons
 import '../styles/PhotoUploader.css';
 import imageCompression from 'browser-image-compression';
 
+// Add this constant at the top of your file
+const MAX_FILES_PER_UPLOAD = 10;
+
 const PhotoUploader = ({ onUpload }) => {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadStatus, setUploadStatus] = useState(null);
@@ -40,6 +43,12 @@ const PhotoUploader = ({ onUpload }) => {
   const handleFileChange = async (e) => {
     const files = Array.from(e.target.files);
     if (files.length === 0) return;
+
+    // Add this check to limit the number of files
+    if (files.length > MAX_FILES_PER_UPLOAD) {
+      setUploadStatus({ type: 'error', message: `You can only upload up to ${MAX_FILES_PER_UPLOAD} files at once.` });
+      return;
+    }
 
     setIsUploading(true);
     setUploadStatus(null);
