@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useFirebase, fetchPhotos } from '../services/firebase';
 import { GALLERY_TITLE } from '../constants';
 import { getDownloadURL } from 'firebase/storage';
-import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
+import { IoIosArrowBack, IoIosArrowForward, IoMdClose } from 'react-icons/io';
 import { ImSpinner2 } from "react-icons/im";
 import '../styles/PhotoGallery.css';
 
@@ -88,7 +88,7 @@ const PhotoGallery = ({ uploadTrigger }) => {
                         className={`photo-item ${getSpanClass(index)}`}
                         onClick={() => handlePhotoClick(index)}
                     >
-                        <img src={photo.url} alt={`${index + 1}`} />
+                        <img src={photo.url} alt={`${index + 1}`} loading="lazy" />
                     </div>
                 ))}
             </div>
@@ -107,6 +107,7 @@ const PhotoGallery = ({ uploadTrigger }) => {
                     </div>
                     <IoIosArrowBack className="arrow-icon left-arrow" onClick={handlePreviousPhoto} />
                     <IoIosArrowForward className="arrow-icon right-arrow" onClick={handleNextPhoto} />
+                    <IoMdClose className="close-icon" onClick={handleCloseFullscreen} />
                 </div>
             )}
         </div>

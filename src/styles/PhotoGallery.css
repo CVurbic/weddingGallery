@@ -1,7 +1,5 @@
 /* PhotoGallery.css */
 
-
-
 .photo-gallery-container {
     width: 100%;
     max-width: 1200px;
@@ -118,6 +116,19 @@
     right: 20px;
 }
 
+.close-icon {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    font-size: 2rem;
+    color: white;
+    cursor: pointer;
+    z-index: 1002;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    padding: 5px;
+}
+
 .loading-icon {
     position: fixed;
     top: 50%;
@@ -141,8 +152,6 @@
     }
 }
 
-/* ... rest of your existing styles ... */
-
 @media screen and (max-width: 1200px) {
     .photo-gallery-container {
         width: 95%;
@@ -157,5 +166,52 @@
     .photo-gallery {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
         grid-auto-rows: 150px;
+    }
+
+    .span-2,
+    .span-2-tall,
+    .span-3-tall,
+    .span-tall {
+        grid-column: span 1;
+        grid-row: span 1;
+    }
+
+    .arrow-icon {
+        font-size: 2rem;
+        padding: 5px;
+    }
+
+    .left-arrow {
+        left: 10px;
+    }
+
+    .right-arrow {
+        right: 10px;
+    }
+
+    .close-icon {
+        top: 10px;
+        right: 10px;
+        font-size: 1.5rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .photo-gallery {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        grid-auto-rows: 120px;
+        gap: 10px;
+    }
+
+    .gallery-title {
+        font-size: 24px;
+    }
+
+    .arrow-icon {
+        font-size: 1.5rem;
+    }
+
+    .close-icon {
+        font-size: 1.2rem;
     }
 }

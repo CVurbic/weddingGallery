@@ -21,7 +21,7 @@ const PhotoUploader = ({ onUpload }) => {
   const createThumbnail = async (file) => {
     const options = {
       maxSizeMB: 0.1,
-      maxWidthOrHeight: 200,
+      maxWidthOrHeight: 400,
       useWebWorker: true,
       fileType: 'image/webp'
     };
