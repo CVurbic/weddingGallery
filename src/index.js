@@ -1,7 +1,7 @@
 // src/index.js
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { FirebaseProvider } from './firebase';
+import { FirebaseProvider } from './services/firebase';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';

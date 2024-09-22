@@ -1,0 +1,78 @@
+.photo-uploader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.file-input {
+    display: none;
+}
+
+.upload-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    height: 40px;
+    background-color: rgba(201, 168, 124, 0.1);
+    border: 1px dashed var(--accent-color);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.upload-button:hover {
+    background-color: rgba(201, 168, 124, 0.2);
+}
+
+.upload-icon {
+    font-size: 18px;
+    color: var(--accent-color);
+    margin-right: 8px;
+}
+
+.upload-text {
+    font-family: 'Lora', serif;
+    font-size: 16px;
+    color: var(--accent-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.upload-status {
+    margin-top: 10px;
+    font-family: 'Lora', serif;
+    font-size: 14px;
+    text-align: center;
+    transition: opacity 0.3s ease;
+}
+
+.upload-status.success {
+    color: #4caf50;
+}
+
+.upload-status.error {
+    color: #f44336;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+.upload-status {
+    animation: fadeOut 0.5s ease 2.5s forwards;
+}
+
+.error {
+    margin-top: 10px;
+    font-family: 'Lora', serif;
+    font-size: 14px;
+    color: #e74c3c;
+}

@@ -1,0 +1,170 @@
+/* style.css */
+
+:root {
+    --background-color: #0a0a0a;
+    --text-color: #e0e0e0;
+    --accent-color: #c9a87c;
+    --secondary-color: #1c1c1c;
+    --button-color: #c9a87c;
+    --button-text-color: #0a0a0a;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Lora', serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.app-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.app-wrapper::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+        linear-gradient(45deg, var(--secondary-color) 25%, transparent 25%),
+        linear-gradient(-45deg, var(--secondary-color) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, var(--secondary-color) 75%),
+        linear-gradient(-45deg, transparent 75%, var(--secondary-color) 75%);
+    background-size: 20px 20px;
+    opacity: 0.03;
+    z-index: -1;
+}
+
+.app-header {
+    text-align: center;
+    padding: 60px 0;
+    background-color: rgba(201, 168, 124, 0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+.app-header::before,
+.app-header::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    background-image: linear-gradient(to right, transparent, var(--accent-color), transparent);
+}
+
+.app-header::before {
+    top: 10px;
+}
+
+.app-header::after {
+    bottom: 10px;
+}
+
+.couple-names {
+    font-family: 'Playfair Display', serif;
+    font-size: 60px;
+    color: var(--accent-color);
+    margin: 0 0 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.wedding-date {
+    font-family: 'Lora', serif;
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--accent-color);
+    margin: 0;
+    letter-spacing: 2px;
+}
+
+.app-main {
+    flex-grow: 1;
+    padding: 40px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.welcome-section {
+    text-align: center;
+    margin-bottom: 50px;
+    position: relative;
+}
+
+.welcome-section h2 {
+    font-family: 'Playfair Display', serif;
+    color: var(--accent-color);
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+.welcome-section p {
+    font-size: 18px;
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.app-footer {
+    text-align: center;
+    padding: 20px;
+    background-color: rgba(201, 168, 124, 0.05);
+    position: relative;
+}
+
+.app-footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 1px;
+    background-image: linear-gradient(to right, transparent, var(--accent-color), transparent);
+}
+
+/* Existing styles for PhotoGallery and PhotoUploader components */
+
+button {
+    background-color: var(--button-color);
+    color: var(--button-text-color);
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-family: 'Cormorant Garamond', serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background-color: var(--text-color);
+    color: var(--background-color);
+}
+
+@media screen and (max-width: 768px) {
+    .couple-names {
+        font-size: 48px;
+    }
+
+    .wedding-date {
+        font-size: 24px;
+    }
+
+    .welcome-section h2 {
+        font-size: 32px;
+    }
+
+    .app-wrapper::before,
+    .app-wrapper::after {
+        width: 150px;
+        height: 150px;
+    }
+}
